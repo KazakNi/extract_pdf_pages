@@ -17,10 +17,11 @@ def check_keywords(text: str, keyword: str) -> bool:
         return True
     return False
 
-def get_relevant_pages(pages: list[PageObject], filter_: str) -> list[int]:
+def get_relevant_pages(pages: list[PageObject], filter_: str, step=1) -> list[int]:
+    '''Выборка страниц по ключевому слову с возможностью выбора шага'''
     final_pages = []
     length = len(pages)
-    for p_number in range(0, length, 3):
+    for p_number in range(0, length, step):
         text = pages[p_number].extract_text()
         print(p_number)
         if not check_keywords(text, filter_):
@@ -40,7 +41,7 @@ def merging(filename, page_numbers) -> None:
 def main():
     filename = config["PDF"]["file2"]
     pages = reading(filename)
-    page_numbers = get_relevant_pages(pages, "liquid")
+    page_numbers = get_relevant_pages(pages, "liquid", step=3)
     merging(filename, page_numbers)
 
 if __name__ == '__main__':
